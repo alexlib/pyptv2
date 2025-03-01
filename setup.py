@@ -2,62 +2,7 @@
 """Setup script for PyPTV2."""
 
 import os
-import sys
-import subprocess
-import numpy as np
-from setuptools import setup, find_packages, Extension
-from setuptools.command.build_ext import build_ext
-from Cython.Build import cythonize
-
-# Ensure source directory for liboptv is included
-LIBOPTV_SRC_DIR = os.path.join('pyptv2', 'openptv', 'liboptv', 'src')
-LIBOPTV_INC_DIR = os.path.join('pyptv2', 'openptv', 'liboptv', 'include')
-CYTHON_SRC_DIR = os.path.join('pyptv2', 'openptv', 'optv')
-
-# Get the list of Cython source files
-cython_sources = [
-    os.path.join(CYTHON_SRC_DIR, f) 
-    for f in os.listdir(CYTHON_SRC_DIR) 
-    if f.endswith('.pyx')
-]
-
-# Get C source files from liboptv
-c_sources = [
-    os.path.join(LIBOPTV_SRC_DIR, f) 
-    for f in os.listdir(LIBOPTV_SRC_DIR) 
-    if f.endswith('.c')
-]
-
-# Define the extensions
-extensions = []
-for cython_source in cython_sources:
-    module_name = os.path.splitext(os.path.basename(cython_source))[0]
-    extensions.append(
-        Extension(
-            f'pyptv2.openptv.optv.{module_name}',
-            sources=[cython_source] + c_sources,
-            include_dirs=[
-                LIBOPTV_INC_DIR, 
-                np.get_include()
-            ],
-            extra_compile_args=['-O3', '-Wall'],
-        )
-    )
-
-# Custom build_ext command
-class BuildExt(build_ext):
-    """Custom build_ext command to handle compiler options."""
-    
-    def build_extensions(self):
-        # Check if compiler supports specific flags
-        if self.compiler.compiler_type == 'unix':
-            # Add more aggressive optimization
-            for e in self.extensions:
-                e.extra_compile_args.extend(['-O3', '-march=native'])
-        
-        # Build the extensions
-        build_ext.build_extensions(self)
-
+from setuptools import setup, find_packages
 
 # Read version
 def get_version():
@@ -99,17 +44,6 @@ setup(
         'pyyaml>=6.0',
         'cython>=0.29.0'
     ],
-    ext_modules=cythonize(
-        extensions,
-        compiler_directives={
-            'language_level': 3,
-            'boundscheck': False,
-            'wraparound': False,
-            'initializedcheck': False,
-            'nonecheck': False
-        },
-    ),
-    cmdclass={'build_ext': BuildExt},
     entry_points={
         'console_scripts': [
             'pyptv2=pyptv2.__main__:main',
