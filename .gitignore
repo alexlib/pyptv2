@@ -1,0 +1,43 @@
+# Compiled files
+*.so
+*.pyc
+*.pyo
+*.pyd
+*.o
+*.a
+*.lib
+*.obj
+*.dll
+*.exe
+
+# Build directories
+build/
+dist/
+__pycache__/
+*.egg-info/
+
+# Testing and cache
+.cache
+.pytest_cache
+.coverage
+htmlcov/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Generated C files from Cython
+# We include them for now until we set up proper building
+# *.c generated from *.pyx
+
+# Virtual environments
+venv/
+env/
+.env/
+
+# Temporary files
+*.log
+*.tmp
+.DS_Store
