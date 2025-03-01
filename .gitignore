@@ -43,3 +43,7 @@ env/
 *.log
 *.tmp
 .DS_Store
+
+# pixi environments
+.pixi
+*.egg-info
