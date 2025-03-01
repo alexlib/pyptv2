@@ -15,7 +15,7 @@ from . import segmentation
 from . import tracker
 from . import tracking_framebuf
 from . import transforms
-from . import vec_utils
+# vec_utils is not compiled as an extension module
 
 __all__ = [
     'calibration',
@@ -29,5 +29,4 @@ __all__ = [
     'tracker',
     'tracking_framebuf',
     'transforms',
-    'vec_utils'
 ]

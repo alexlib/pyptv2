@@ -7,17 +7,39 @@ import yaml
 from pathlib import Path
 
 try:
-    # Import OpenPTV modules
-    from pyptv2.openptv.optv import calibration
-    from pyptv2.openptv.optv import correspondences
-    from pyptv2.openptv.optv import image_processing
-    from pyptv2.openptv.optv import parameters
-    from pyptv2.openptv.optv import orientation
-    from pyptv2.openptv.optv import segmentation
-    from pyptv2.openptv.optv import tracker
-    from pyptv2.openptv.optv import tracking_framebuf
+    # Add openptv directory to Python path so we can import optv directly
+    openptv_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'openptv')
+    if os.path.exists(openptv_path) and openptv_path not in sys.path:
+        sys.path.insert(0, openptv_path)
     
-    HAVE_OPENPTV = True
+    # Import OpenPTV modules
+    try:
+        # First try the direct import
+        import optv.calibration as calibration
+        import optv.correspondences as correspondences
+        import optv.image_processing as image_processing
+        import optv.parameters as parameters
+        import optv.orientation as orientation
+        import optv.segmentation as segmentation
+        import optv.tracker as tracker
+        import optv.tracking_framebuf as tracking_framebuf
+        
+        HAVE_OPENPTV = True
+        print("OpenPTV modules imported directly")
+    except ImportError as e:
+        # Fall back to package import
+        print(f"Direct import failed: {e}, trying package import")
+        from pyptv2.openptv.optv import calibration
+        from pyptv2.openptv.optv import correspondences
+        from pyptv2.openptv.optv import image_processing
+        from pyptv2.openptv.optv import parameters
+        from pyptv2.openptv.optv import orientation
+        from pyptv2.openptv.optv import segmentation
+        from pyptv2.openptv.optv import tracker
+        from pyptv2.openptv.optv import tracking_framebuf
+        
+        HAVE_OPENPTV = True
+        print("OpenPTV modules imported from package")
 except ImportError as e:
     print(f"Warning: OpenPTV modules could not be imported: {e}")
     HAVE_OPENPTV = False
