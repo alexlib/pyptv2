@@ -29,8 +29,10 @@ htmlcov/
 *.swo
 
 # Generated C files from Cython
-# We include them for now until we set up proper building
-# *.c generated from *.pyx
+# Exclude generated C files from Cython compilation
+pyptv2/openptv/optv/*.c
+pyptv2/openptv/build/
+pyptv2/openptv/optv.egg-info/
 
 # Virtual environments
 venv/
