@@ -2,7 +2,7 @@
 from optv.parameters cimport control_par
 from optv.calibration cimport ap_52, calibration
 
-cdef extern from "optv/trafo.h" nogil:
+cdef extern from "optv/trafo.h":
     void pixel_to_metric(double * x_metric
                          , double * y_metric
                          , double x_pixel

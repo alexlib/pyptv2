@@ -51,9 +51,8 @@ cdef numpy.ndarray wrap_1d_c_arr_as_ndarray(object base_obj,
     shape[0] = <numpy.npy_intp> arr_size
     
     ndarr = numpy.PyArray_SimpleNewFromData(1, shape, num_type, data)
+    ndarr.base = <PyObject *> base_obj
     Py_INCREF(base_obj)
-    # Setting base attribute differently in newer versions of NumPy
-    numpy.set_array_base(ndarr, base_obj)
     
     if copy:
         return numpy.copy(ndarr)

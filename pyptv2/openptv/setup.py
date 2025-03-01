@@ -12,16 +12,23 @@ import importlib
 
 
 class PrepareCommand(setuptools.Command):
-    description = 'Prepare the package for building'
-    user_options = []  # Required by setuptools.Command
-    
+    # We must make some preparations before we can build the extension.
+    # First, we should copy the liboptv sources to a subdirectory, so they can be included with the sdist package.
+    # Second, we convert the pyx files to c files, so the package can be installed from source without requiring Cython
+    description = "Convert pyx files to C before building"
+
+    # We allow specifying the liboptv dir, for cibuildwheel, which must have everything under py_bind
+    user_options = [('liboptv-dir=', None, 'Path for liboptv, default is "../liboptv"')]
+
     def initialize_options(self):
-        pass
-        
+        self.liboptv_dir = False
+
     def finalize_options(self):
-        pass
-        
+        if not self.liboptv_dir:
+            self.liboptv_dir = './liboptv'
+
     def run(self):
+        # self.copy_source_files()
         self.convert_to_c()
 
     def convert_to_c(self):
@@ -126,7 +133,7 @@ setup(
         'prepare': PrepareCommand,
     },
     packages=['optv'],
-    extra_compile_args=['-Wno-cpp'],
+    # extra_compile_args=['-Wno-cpp'],
     ext_modules=ext_mods,
     include_package_data=True,
     data_files=[

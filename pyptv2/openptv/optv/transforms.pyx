@@ -37,7 +37,7 @@ def convert_arr_pixel_to_metric(np.ndarray[ndim=2, dtype=np.float_t] input,
     Returns:
     if no array was passed for output returns a new numpy ndarray with converted coordinates
     '''
-    return convert_generic(input, control._control_par, out, &pixel_to_metric)
+    return convert_generic(input, control._control_par, out, pixel_to_metric)
   
 def convert_arr_metric_to_pixel(np.ndarray[ndim=2, dtype=np.float_t] input,
                                 ControlParams control,
@@ -51,12 +51,12 @@ def convert_arr_metric_to_pixel(np.ndarray[ndim=2, dtype=np.float_t] input,
     Returns:
     if no array was passed for output returns a new numpy ndarray with converted coordinates
     '''
-    return convert_generic(input, control._control_par, out, &metric_to_pixel)
+    return convert_generic(input, control._control_par, out, metric_to_pixel)
 
 cdef convert_generic(np.ndarray[ndim=2, dtype=np.float_t] input,
                         control_par * c_control,
                         np.ndarray[ndim=2, dtype=np.float_t] out,
-                        void (*convert_function)(double * , double * , double, double , control_par *) nogil):
+                        void convert_function(double * , double * , double, double , control_par *)):
     out = check_inputs(input, out)
 
     for i in range(input.shape[0]):
@@ -83,7 +83,7 @@ def correct_arr_brown_affine(np.ndarray[ndim=2, dtype=np.float_t] input,
     converted coordinates
     '''
     return brown_affine_generic(input, calibration._calibration.added_par, out,
-        &correct_brown_affin)
+        correct_brown_affin)
   
 def distort_arr_brown_affine(np.ndarray[ndim=2, dtype=np.float_t] input,
                                 Calibration calibration,
@@ -98,12 +98,12 @@ def distort_arr_brown_affine(np.ndarray[ndim=2, dtype=np.float_t] input,
     if no array was passed for output - returns a new numpy ndarray with converted coordinates
     '''
     return brown_affine_generic(input, calibration._calibration.added_par, out,
-        &distort_brown_affin)
+        distort_brown_affin)
 
 cdef brown_affine_generic(np.ndarray[ndim=2, dtype=np.float_t] input,
                         ap_52 c_ap_52,
                         np.ndarray[ndim=2, dtype=np.float_t] out,
-                        void (*affine_function)(double, double, ap_52 , double * , double *) nogil):
+                        void affine_function(double, double, ap_52 , double * , double *)):
     out = check_inputs(input, out)
     
     for i in range(input.shape[0]):

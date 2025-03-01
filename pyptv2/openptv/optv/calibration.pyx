@@ -8,8 +8,6 @@ from libc.stdlib cimport malloc, free
 import numpy
 cimport numpy as cnp
 
-# Remove this circular import
-# from optv.calibration import Calibration
 
 cdef extern from "optv/calibration.h":
     calibration *read_calibration(char *ori_file, char *add_file,
@@ -281,3 +279,4 @@ cdef class Calibration:
     # Free memory
     def __dealloc__(self):
         free(self._calibration)
+

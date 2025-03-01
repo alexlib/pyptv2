@@ -5,7 +5,7 @@ This branch contains updates to make PyPTV2 compatible with Python 3.11+, focusi
 ## Key Changes
 1. **Cython Compatibility**:
    - Added language_level directives to Cython files
-   - Fixed NumPy type declarations (replaced `np.int_t` with `np.int32_t`)
+   - Fixed NumPy type declarations (replaced `np.int64_t` with `np.int32_t`)
    - Created minimal `vec_utils.pxd` implementation for vec3d/vec2d structs
    - Added `set_array_base()` for NumPy array handling in Python 3.12+
 

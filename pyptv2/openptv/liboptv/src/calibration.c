@@ -13,7 +13,7 @@
 *
 *   Arguments:
 *   Exterior Ex - exterior orientation.
-*   Interior I - interior orientation.
+*   Interior In - interior orientation.
 *   Glass G - glass parameters.
 *   ap_52 addp - optional additional (distortion) parameters. NULL is fine if
 *      add_file is NULL.
@@ -22,7 +22,7 @@
 *   char *add_file - path of file to contain added (distortions) parameters.
 */
 
-int write_ori (Exterior Ex, Interior I, Glass G, ap_52 ap, \
+int write_ori (Exterior Ex, Interior In, Glass G, ap_52 ap, \
         char *filename, char *add_file){
   FILE	*fp;
   int  	i, success = 0;
@@ -37,7 +37,7 @@ int write_ori (Exterior Ex, Interior I, Glass G, ap_52 ap, \
 	   Ex.x0, Ex.y0, Ex.z0, Ex.omega, Ex.phi, Ex.kappa);
   for (i=0; i<3; i++)  fprintf (fp, "    %10.7f %10.7f %10.7f\n",
 				Ex.dm[i][0], Ex.dm[i][1], Ex.dm[i][2]);
-  fprintf (fp,"\n    %8.4f %8.4f\n    %8.4f\n", I.xh, I.yh, I.cc);
+  fprintf (fp,"\n    %8.4f %8.4f\n    %8.4f\n", In.xh, In.yh, In.cc);
   fprintf (fp,"\n    %20.15f %20.15f  %20.15f\n", G.vec_x, G.vec_y, G.vec_z);
   
   fclose (fp);
@@ -78,7 +78,7 @@ finalize:
 *   values.
 */
 
-int read_ori (Exterior Ex[], Interior I[], Glass G[], char *ori_file, \
+int read_ori (Exterior Ex[], Interior In[], Glass G[], char *ori_file, \
     ap_52 addp[], char *add_file, char *add_fallback){
     
   FILE	*fp;
@@ -110,7 +110,7 @@ int read_ori (Exterior Ex[], Interior I[], Glass G[], char *ori_file, \
   }
 
   /* Interior */
-  scan_res = fscanf (fp, "%lf %lf %lf", &(I->xh), &(I->yh), &(I->cc));
+  scan_res = fscanf (fp, "%lf %lf %lf", &(In->xh), &(In->yh), &(In->cc));
   if (scan_res != 3) return 0;
   
   /* Glass */

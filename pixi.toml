@@ -10,6 +10,28 @@ python = "3.11.*"
 pip = "*"
 setuptools = "*"
 wheel = "*"
-numpy = "<=1.26.0"  # Use compatible NumPy version
-cython = "<3.0.0"   # Use Cython 0.29.x which is more compatible
+numpy = "==1.23.5"  # Specific version for compatibility with optv
+cython = "==0.29.36"  # Use Cython 0.29.x which is more compatible
 pytest = "*"
+cmake = "*"
+PySide6 = ">=6.4.0"
+scikit-image = "*"
+Pygments = "*"
+imagecodecs = "*"
+pandas = "*"
+tqdm = "*"
+matplotlib = ">=3.5.0"
+scipy = "*"
+pyyaml = ">=6.0"
+
+[tool.pixi.pypi-dependencies]
+pyptv2 = { path = ".", editable = true }
+
+[tool.pixi.tasks]
+build-optv = "cd pyptv2/openptv && python setup.py prepare && python setup.py install"
+install-pyptv2 = "pip install -e ."
+test-pyptv2 = "python -c \"import pyptv2; print('Successfully imported pyptv2')\""
+test-optv = "python -c \"from pyptv2.openptv.optv import parameters; print('Successfully imported optv parameters')\""
+
+[tasks]
+build = "bash ./install.sh"
